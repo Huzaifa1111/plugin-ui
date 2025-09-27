@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { AppLayout } from "@/components/layout"
-import { OrdersTable } from "@/components/orders-table"
-import { fetchOrders } from "@/lib/mock-data"
+import { useState, useEffect } from "react";
+import { AppLayout } from "@/components/layout";
+import { OrdersTable } from "@/components/orders-table";
+import { fetchOrders } from "@/lib/mock-data";
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadOrders()
-  }, [])
+    loadOrders();
+  }, []);
 
   const loadOrders = async () => {
     try {
-      const ordersData = await fetchOrders()
-      setOrders(ordersData)
+      const ordersData = await fetchOrders();
+      setOrders(ordersData);
     } catch (error) {
-      console.error("Error loading orders:", error)
+      console.error("Error loading orders:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -40,19 +40,21 @@ export default function OrdersPage() {
           </div>
         </div>
       </AppLayout>
-    )
+    );
   }
 
   return (
     <AppLayout>
       <div className="p-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">Orders</h1>
-          <p className="text-muted-foreground mt-2">Manage and monitor your Shopify order synchronization</p>
+          <h1 className="text-3xl font-bold">Order</h1>
+          <p className="text-muted-foreground mt-2">
+            Manage and monitor your Shopify order synchronization
+          </p>
         </div>
 
         <OrdersTable orders={orders} />
       </div>
     </AppLayout>
-  )
+  );
 }
