@@ -62,8 +62,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AppLayout } from "@/components/layout";
-import { OrdersTable } from "@/components/orders-table";
+import { AppLayout } from "@/components/layout.jsx";
+import { OrdersTable } from "@/components/orders-table.jsx";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -78,18 +78,21 @@ export default function OrdersPage() {
       const shop = localStorage.getItem("shop");
       const accessToken = localStorage.getItem("accessToken");
 
-      console.log("Shop:", shop);
-      console.log("AccessToken:", accessToken);
+      if (!shop || !accessToken) {
+        console.error("Missing shop or accessToken in localStorage");
+        setLoading(false);
+        return;
+      }
 
       const res = await fetch(
-        `https://naxi-shopify-app.vercel.app/api/orders?shop=${shop}&accessToken=${accessToken}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders?shop=${shop}&accessToken=${accessToken}`
       );
       const data = await res.json();
 
-      console.log("Orders API response:", data);
-
       if (data.orders) {
         setOrders(data.orders);
+      } else {
+        console.error("Error fetching orders:", data);
       }
     } catch (error) {
       console.error("Error loading orders:", error);
@@ -98,25 +101,11 @@ export default function OrdersPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <AppLayout>
-        <div className="p-8">Loading orders...</div>
-      </AppLayout>
-    );
-  }
-
   return (
     <AppLayout>
       <div className="p-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">Orders...</h1>
-          <p className="text-muted-foreground mt-2">
-            Manage and monitor your Shopify order synchronization
-          </p>
-        </div>
-
-        <OrdersTable orders={orders} />
+        <h1 className="text-3xl font-bold mb-4">Orders</h1>
+        {loading ? <p>Loading orders</p> : <OrdersTable orders={orders} />}
       </div>
     </AppLayout>
   );
