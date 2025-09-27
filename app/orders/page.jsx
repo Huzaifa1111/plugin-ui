@@ -78,21 +78,18 @@ export default function OrdersPage() {
       const shop = localStorage.getItem("shop");
       const accessToken = localStorage.getItem("accessToken");
 
-      if (!shop || !accessToken) {
-        console.warn("No shop or accessToken in localStorage");
-        setLoading(false);
-        return;
-      }
+      console.log("Shop:", shop);
+      console.log("AccessToken:", accessToken);
 
       const res = await fetch(
         `https://naxi-shopify-app.vercel.app/api/orders?shop=${shop}&accessToken=${accessToken}`
       );
       const data = await res.json();
 
+      console.log("Orders API response:", data);
+
       if (data.orders) {
         setOrders(data.orders);
-      } else {
-        console.error("Error fetching orders:", data);
       }
     } catch (error) {
       console.error("Error loading orders:", error);
@@ -113,7 +110,7 @@ export default function OrdersPage() {
     <AppLayout>
       <div className="p-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">Orders</h1>
+          <h1 className="text-3xl font-bold">Orders...</h1>
           <p className="text-muted-foreground mt-2">
             Manage and monitor your Shopify order synchronization
           </p>
