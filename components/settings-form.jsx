@@ -64,7 +64,7 @@ export function SettingsForm() {
         <Button
           onClick={handleSave}
           disabled={saving || !settings.nexiApiKey.trim()}
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2 hover:bg-accent hover:text-accent-foreground"
         >
           <Save className={`h-4 w-4 ${saving ? "animate-pulse" : ""}`} />
           <span>{saving ? "Saving..." : "Save Settings"}</span>
